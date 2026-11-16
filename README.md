@@ -127,7 +127,7 @@ These are **recommendations to test**, not measured campaign effects or estimate
 - RFM segment assignments depend on chosen thresholds and business rules.
 - Model performance is measured on a single final test month; results may vary over time. The model is not calibrated, and prediction does not demonstrate the causal impact of a marketing campaign.
 - The current notebook-to-processed-data discrepancy needs reconciliation before claiming end-to-end reproducibility.
-
+- The data-cleaning notebook and final analytical dataset reflect slightly different filtering rules, resulting in a difference of 10,933 transaction rows. The reported SQL findings are based on the final analytical dataset. Reconciliation of these filtering rules remains a future improvement.
 ---
 
 **Project focus:** Translating transaction data into clear, testable customer and commercial decisions — with transparent assumptions and limitations.
