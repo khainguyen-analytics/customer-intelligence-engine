@@ -181,6 +181,7 @@ These recommendations are exploratory and require further validation before impl
 
 ## Project Structure
 
+```text
 customer-intelligence-engine/
 ├── data/
 │   ├── raw/
@@ -204,21 +205,72 @@ customer-intelligence-engine/
 ├── dashboard/
 ├── requirements.txt
 └── README.md
+```
+
+
+## Running the SQL Analysis
+
+The project includes eight SQL queries using DuckDB to analyse sales performance, customer behaviour, RFM segments, and repeat-purchase predictions.
+
+### Setup
+
+Install the project dependencies:
+
+```bash
+python3 -m pip install -r requirements.txt
+```
+
+Run the Jupyter notebooks first to generate the processed CSV files required by the SQL queries.
+
+### Execute SQL Queries
+
+From the project root directory, run:
+
+```bash
+python3 -c "import duckdb; print(duckdb.sql(open('sql/01_sales_overview.sql').read()).df().to_string(index=False))"
+```
+
+To run the high-value customers at risk analysis:
+
+```bash
+python3 -c "import duckdb; print(duckdb.sql(open('sql/08_high_value_customers_at_risk.sql').read()).df().to_string(index=False))"
+```
+
+Replace the SQL filename to execute any of the other queries.
+
+**Note:** Raw and processed datasets are excluded from version control. Download the original dataset and execute the notebooks to reproduce the analyses.
 
 ## Next Steps
 
-- Build a model to predict repeat purchasing within a defined future period.
-- Evaluate model performance using time-based validation.
-- Explore customer retention and purchase-propensity insights.
-- Develop an interactive business intelligence dashboard.
+- Develop an interactive Power BI dashboard to present
+  sales performance, customer segmentation and
+  repeat-purchase predictions.
+- Create a consolidated SQL analysis report documenting
+  key findings, business implications and limitations.
+- Improve project reproducibility with clear setup
+  instructions and dependency requirements.
+- Explore opportunities to evaluate customer engagement
+  strategies using historical and predictive insights.
 
 ## Limitations
 
-- The dataset covers historical transactions from 2009–2011.
-- Customer-level analysis excludes transactions without identifiable customer IDs.
-- RFM segments use rule-based thresholds rather than machine-learning clustering.
-- Sales contribution is based on positive transaction values and does not represent net profit.
-- Predictive modelling and dashboard development are planned but not yet completed.
+- The dataset contains historical transactions from
+  December 2009 to December 2011, so findings may not
+  reflect current e-commerce behaviour.
+- Customer-level analysis excludes transactions without
+  identifiable customer IDs.
+- RFM segmentation uses rule-based scoring rather than
+  machine-learning clustering.
+- Gross sales and RFM monetary values do not represent
+  cancellation-adjusted net revenue or profit.
+- Recorded cancellations have not been systematically
+  matched to their original purchases.
+- The repeat-purchase model was evaluated using a
+  time-based test period, but performance may change
+  when applied to other periods or businesses.
+- Predicted purchase probabilities do not establish
+  whether marketing interventions will increase sales.
+- The Power BI dashboard has not yet been developed.
 
 ## Data Source
 
