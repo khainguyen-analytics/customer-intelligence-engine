@@ -15,8 +15,3 @@ FROM read_csv_auto(
     types = {'Invoice': 'VARCHAR'}
 )
 WHERE NOT regexp_matches(Invoice, '[A-Za-z]');
-
-
-
-
-

@@ -1,35 +1,36 @@
+
 -- Customer Intelligence Engine
--- 03: Net Sales Analysis
+-- 03: Sales and Cancellation Analysis
 -- Business question:
--- How do cancellations affect recorded revenue?
+-- What is the value of cleaned sales and recorded cancellations?
 
 WITH sales AS (
     SELECT
-        SUM(TotalSales) AS gross_sales
+        SUM(TotalSales) AS cleaned_sales_revenue
     FROM read_csv_auto(
         'data/processed/sales_clean.csv',
         types = {'Invoice': 'VARCHAR'}
     )
-    WHERE NOT regexp_matches(Invoice, '[A-Za-z]')
 ),
 
 cancellations AS (
     SELECT
         SUM(
-            TRY_CAST(Quantity AS DOUBLE) *
+            ABS(TRY_CAST(Quantity AS DOUBLE)) *
             TRY_CAST(Price AS DOUBLE)
-        ) AS cancellation_value
+        ) AS recorded_cancellation_value
     FROM read_csv_auto(
         'data/processed/cancelled_transactions.csv',
         all_varchar = true
     )
     WHERE TRY_CAST(Quantity AS DOUBLE) < 0
+      AND TRY_CAST(Price AS DOUBLE) > 0
 )
 
 SELECT
-    ROUND(gross_sales, 2) AS gross_sales,
-    ROUND(cancellation_value, 2) AS recorded_cancellations,
-    ROUND(gross_sales + cancellation_value, 2)
-        AS provisional_net_sales
+    ROUND(cleaned_sales_revenue, 2)
+        AS cleaned_sales_revenue,
+    ROUND(recorded_cancellation_value, 2)
+        AS recorded_cancellation_value
 FROM sales
-Cross JOIN cancellations;
+CROSS JOIN cancellations;
